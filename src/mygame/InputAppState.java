@@ -24,8 +24,7 @@ public class InputAppState
     private InputManager inputManager;
     private boolean left;
     private boolean right;
-    private boolean foward;
-    private boolean backward;
+    private float speed;
 
     public enum InputMapping {
         RotateLeft, RotateRight, MoveFoward, MoveBackward;
@@ -50,20 +49,24 @@ public class InputAppState
             Application app) {
         this.inputManager = app.getInputManager();
         addInputMappings();
+        speed = 0.0f;
     }
     
     @Override
     public void onAnalog(String name, float value, float tpf) {
+        if(name.equals(InputMapping.MoveFoward.name())) {
+            speed += 0.5f;
+            if(speed>100.0f) speed = 100.0f;
+        } else if(name.equals(InputMapping.MoveBackward.name())) {
+            speed -= 1.0f;
+            if(speed<0.0f) speed = 0.0f;
+        }
+
     }
 
     @Override
     public void onAction(String name, boolean isPressed, float tpf) {
-        if(name.equals(InputMapping.MoveFoward.name())) {
-            foward = true;
-        } else if(name.equals(InputMapping.MoveBackward.name())) {
-            backward = true;
-        }
-        else if(name.equals(InputMapping.RotateRight.name())) {
+        if(name.equals(InputMapping.RotateRight.name())) {
             right = true;
         }
         else if(name.equals(InputMapping.RotateLeft.name())) {
@@ -98,20 +101,12 @@ public class InputAppState
         this.right = right;
     }
 
-    public boolean isFoward() {
-        return foward;
+    public float getSpeed() {
+        return speed;
     }
 
-    public void setFoward(boolean foward) {
-        this.foward = foward;
-    }
-
-    public boolean isBackward() {
-        return backward;
-    }
-
-    public void setBackward(boolean backward) {
-        this.backward = backward;
+    public void setSpeed(float speed) {
+        this.speed = speed;
     }
 
 }

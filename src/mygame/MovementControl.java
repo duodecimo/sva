@@ -24,16 +24,9 @@ public class MovementControl extends AbstractControl {
 
     @Override
     protected void controlUpdate(float tpf) {
-        if(app.getInputAppState().isFoward()) {
-            direction = app.getCamera().getDirection().normalizeLocal();
-            app.getCameraNode().move(direction.multLocal(15 * tpf));
-            app.getInputAppState().setFoward(false);
-        }
-        if(app.getInputAppState().isBackward()) {
-            direction = app.getCamera().getDirection().normalizeLocal();
-            app.getCameraNode().move(direction.multLocal(-15 * tpf));
-            app.getInputAppState().setBackward(false);
-        }
+        direction = app.getCamera().getDirection().normalizeLocal();
+        app.getCameraNode().move(direction.multLocal(app.getInputAppState().
+                getSpeed() * tpf));
         if(app.getInputAppState().isLeft()) {
             app.getCameraNode().rotate(0, 5 * tpf, 0);
             app.getInputAppState().setLeft(false);
