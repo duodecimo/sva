@@ -22,9 +22,8 @@ public class InputAppState
     extends AbstractAppState 
     implements ActionListener, AnalogListener {
     private InputManager inputManager;
-    private boolean left;
-    private boolean right;
     private float speed;
+    private float angle;
 
     public enum InputMapping {
         RotateLeft, RotateRight, MoveFoward, MoveBackward;
@@ -50,6 +49,7 @@ public class InputAppState
         this.inputManager = app.getInputManager();
         addInputMappings();
         speed = 0.0f;
+        angle = 0.0f;
     }
     
     @Override
@@ -61,17 +61,21 @@ public class InputAppState
             speed -= 1.0f;
             if(speed<0.0f) speed = 0.0f;
         }
+        else if(name.equals(InputMapping.RotateLeft.name())) {
+            angle += 0.05f;
+            if(angle<0.0f && angle > -2.0f) angle = 0.0f;
+            if(angle>5.0f) angle = 5.0f;
+        }
+        else if(name.equals(InputMapping.RotateRight.name())) {
+            angle -= 0.05f;
+            if(angle>0.0f && angle < 2.0f) angle = 0.0f;
+            if(angle<-5.0f) angle = -5.0f;
+        }
 
     }
 
     @Override
     public void onAction(String name, boolean isPressed, float tpf) {
-        if(name.equals(InputMapping.RotateRight.name())) {
-            right = true;
-        }
-        else if(name.equals(InputMapping.RotateLeft.name())) {
-            left = true;
-        }
     }
 
     @Override
@@ -85,28 +89,20 @@ public class InputAppState
         }
     }
 
-    public boolean isLeft() {
-        return left;
-    }
-
-    public void setLeft(boolean left) {
-        this.left = left;
-    }
-
-    public boolean isRight() {
-        return right;
-    }
-
-    public void setRight(boolean right) {
-        this.right = right;
-    }
-
     public float getSpeed() {
         return speed;
     }
 
     public void setSpeed(float speed) {
         this.speed = speed;
+    }
+
+    public float getAngle() {
+        return angle;
+    }
+
+    public void setAngle(float angle) {
+        this.angle = angle;
     }
 
 }
