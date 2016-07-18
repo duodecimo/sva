@@ -37,23 +37,16 @@ public class Main extends SimpleApplication {
         cameraNode.addControl(new MovementControl(this));
         cameraSpeed = 0.0f;
         rootNode.attachChild(cameraNode);
-        /*
-        Texture2D texture2D = (Texture2D) assetManager.loadTexture("Textures/car03.png");
-        float width = texture2D.getImage().getWidth();
-        float height = texture2D.getImage().getHeight();
-        Picture picture = new Picture(INPUT_MAPPING_EXIT);
-        final boolean useAlpha = true;
-        picture.setTexture(assetManager, texture2D, useAlpha);
-        picture.setWidth(width);
-        picture.setHeight(height);
-        */
-        Picture pic = new Picture("HUD Picture");
+        Spatial car = assetManager.loadModel("Models/Carroblend01.j3o");
+        car.scale(2.0f);
+        rootNode.attachChild(car);
+        car.setLocalTranslation(0.0f, 1.0f, 1.0f);
+        /*        Picture pic = new Picture("HUD Picture");
         pic.setImage(assetManager, "Textures/dummycar.png", true);
         pic.setWidth(settings.getWidth());
         pic.setHeight(settings.getHeight());
         //pic.setPosition(settings.getWidth()/2, settings.getHeight()/2);
-        guiNode.attachChild(pic);
-    }
+        guiNode.attachChild(pic);*/    }
 
     @Override
     public void simpleUpdate(float tpf) {
