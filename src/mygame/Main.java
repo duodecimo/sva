@@ -45,7 +45,7 @@ public class Main extends SimpleApplication {
         car.scale(2.0f);
         Quaternion quaternion = new Quaternion().fromAngleAxis(-FastMath.HALF_PI, Vector3f.UNIT_Y);
         car.rotate(quaternion);
-        car.setLocalTranslation(0.0f, -0.5f, -0.0f);
+        car.setLocalTranslation(0.0f, -0.5f, 0.0f);
         carNode = new Node("carNode");
         carNode.attachChild(car);
         carNode.setLocalTranslation(0.0f, -1.0f, 0.0f);
@@ -57,7 +57,8 @@ public class Main extends SimpleApplication {
         cameraNode.lookAt(carNode.getLocalTranslation(), Vector3f.UNIT_Y);
         //cameraNode.setLocalTranslation(new Vector3f(0.0f, 0.002f, 0.0f));
         cameraNode.setControlDir(CameraControl.ControlDirection.SpatialToCamera);
-        //flyCam.setEnabled(false);
+        Vector3f camLeft = cam.getDirection().negate();
+        car.move(camLeft.multLocal(0.08f));
         carSpeed = 0.0f;
         rootNode.attachChild(carNode);
     }

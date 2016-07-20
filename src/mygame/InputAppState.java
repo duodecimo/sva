@@ -62,13 +62,13 @@ public class InputAppState
             if(speed<0.0f) speed = 0.0f;
         }
         else if(name.equals(InputMapping.RotateLeft.name())) {
-            angle += 0.05f;
-            if(angle<0.0f && angle > -2.0f) angle = 0.0f;
+            angle += 0.005f;
+            if(angle<=0.0f && angle > -1.0f) angle = 0.0f;
             if(angle>5.0f) angle = 5.0f;
         }
         else if(name.equals(InputMapping.RotateRight.name())) {
-            angle -= 0.05f;
-            if(angle>0.0f && angle < 2.0f) angle = 0.0f;
+            angle -= 0.005f;
+            if(angle>=0.0f && angle < 1.0f) angle = 0.0f;
             if(angle<-5.0f) angle = -5.0f;
         }
 
