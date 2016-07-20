@@ -1,17 +1,23 @@
 package mygame;
 
 import com.jme3.app.SimpleApplication;
+import com.jme3.material.Material;
+import com.jme3.math.FastMath;
+import com.jme3.math.Quaternion;
+import com.jme3.math.Vector3f;
 import com.jme3.scene.CameraNode;
+import com.jme3.scene.Node;
 import com.jme3.scene.Spatial;
-import com.jme3.texture.Texture2D;
-import com.jme3.ui.Picture;
+import com.jme3.scene.control.CameraControl;
 
 /**
  * @author duodecimo
  */
 public class Main extends SimpleApplication {
+    private Node carNode;
+    private Spatial car;
     private CameraNode cameraNode;
-    private float cameraSpeed;
+    private float carSpeed;
     private InputAppState inputAppState;
 
     public static void main(String[] args) {
@@ -32,40 +38,53 @@ public class Main extends SimpleApplication {
         rootNode.attachChild(gameLevel);
         inputAppState = new InputAppState();
         stateManager.attach(inputAppState);
-        cameraNode = new CameraNode("cameraNode", getCamera());
-        cameraNode.addControl(new TerrainTrackControl());
-        cameraNode.addControl(new MovementControl(this));
-        cameraSpeed = 0.0f;
-        rootNode.attachChild(cameraNode);
-        Spatial car = assetManager.loadModel("Models/Carroblend01.j3o");
+        car = assetManager.loadModel("Models/Carroblend01.j3o");
+        Material mat = new Material(assetManager, "Common/MatDefs/Misc/ShowNormals.j3md");
+        car.setMaterial(mat);
+        car.setCullHint(Spatial.CullHint.Never);
         car.scale(2.0f);
-        rootNode.attachChild(car);
-        car.setLocalTranslation(0.0f, 1.0f, 1.0f);
-        /*        Picture pic = new Picture("HUD Picture");
-        pic.setImage(assetManager, "Textures/dummycar.png", true);
-        pic.setWidth(settings.getWidth());
-        pic.setHeight(settings.getHeight());
-        //pic.setPosition(settings.getWidth()/2, settings.getHeight()/2);
-        guiNode.attachChild(pic);*/    }
+        Quaternion quaternion = new Quaternion().fromAngleAxis(-FastMath.HALF_PI, Vector3f.UNIT_Y);
+        car.rotate(quaternion);
+        car.setLocalTranslation(0.0f, -0.5f, -0.0f);
+        carNode = new Node("carNode");
+        carNode.attachChild(car);
+        carNode.setLocalTranslation(0.0f, -1.0f, 0.0f);
+        carNode.addControl(new TerrainTrackControl());
+        carNode.addControl(new MovementControl(this));
+        cameraNode = new CameraNode("cameraNode", cam);
+        carNode.attachChild(cameraNode);
+        cameraNode.setLocalTranslation(new Vector3f(-3.0f, 0.0f, 0.0f));
+        cameraNode.lookAt(carNode.getLocalTranslation(), Vector3f.UNIT_Y);
+        //cameraNode.setLocalTranslation(new Vector3f(0.0f, 0.002f, 0.0f));
+        cameraNode.setControlDir(CameraControl.ControlDirection.SpatialToCamera);
+        //flyCam.setEnabled(false);
+        carSpeed = 0.0f;
+        rootNode.attachChild(carNode);
+    }
 
     @Override
     public void simpleUpdate(float tpf) {
         super.simpleUpdate(tpf);
-        if(getFlyByCamera() != null && getFlyByCamera().isEnabled()) {
-            getFlyByCamera().setEnabled(false);
-        }
     }
 
     public CameraNode getCameraNode() {
         return cameraNode;
     }
 
-    public float getCameraSpeed() {
-        return cameraSpeed;
+    public float getCarSpeed() {
+        return carSpeed;
     }
 
     public InputAppState getInputAppState() {
         return inputAppState;
+    }
+
+    public Spatial getCar() {
+        return car;
+    }
+
+    public Node getCarNode() {
+        return carNode;
     }
 
 }

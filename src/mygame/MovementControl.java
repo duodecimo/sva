@@ -5,6 +5,7 @@
  */
 package mygame;
 
+import com.jme3.math.Quaternion;
 import com.jme3.math.Vector3f;
 import com.jme3.renderer.RenderManager;
 import com.jme3.renderer.ViewPort;
@@ -27,10 +28,9 @@ public class MovementControl extends AbstractControl {
         direction = app.getCamera().getDirection().normalizeLocal();
         if(app.getInputAppState().
                 getSpeed()!=0.0f) {
-            app.getCameraNode().rotate(0.0f, app.getInputAppState().
-                    getAngle() * tpf, 0);
+            app.getCarNode().rotate(0.0f, app.getInputAppState().getAngle() * tpf, 0.0f);
         }
-        app.getCameraNode().move(direction.multLocal(app.getInputAppState().
+        app.getCarNode().move(direction.multLocal(app.getInputAppState().
                 getSpeed() * tpf));
     }
 
